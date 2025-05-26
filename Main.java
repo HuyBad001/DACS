@@ -1,9 +1,10 @@
-package Users;
+    package Users;
 
-import javax.swing.SwingUtilities;
+    import javax.swing.SwingUtilities;
 
-public class Main {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new InternetCustomerManager().setVisible(true));
+    public class Main {
+        public static void main(String[] args) {
+            SwingUtilities.invokeLater(() -> new InternetCustomerManager().setVisible(true));
+        }
     }
-}
+    

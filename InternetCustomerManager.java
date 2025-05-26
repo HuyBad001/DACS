@@ -15,23 +15,40 @@ public class InternetCustomerManager extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header (Top Bar with Logo/Text)
-        JPanel header = new JPanel();
+        // Header
+        JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(25, 118, 210));
         header.setPreferredSize(new Dimension(getWidth(), 70));
-        header.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
 
-        // Optional: Add icon
+// Left side of header (icon + title)
+        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        leftHeader.setOpaque(false); // Để màu nền trong suốt
+
         JLabel iconLabel = new JLabel();
-        iconLabel.setIcon(UIManager.getIcon("FileView.computerIcon")); // Placeholder icon
-
+        iconLabel.setIcon(UIManager.getIcon("FileView.computerIcon"));
         JLabel titleLabel = new JLabel("HDPhone");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        header.add(iconLabel);
-        header.add(titleLabel);
+        leftHeader.add(iconLabel);
+        leftHeader.add(titleLabel);
+
+// Right side of header (greeting)
+        JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        rightHeader.setOpaque(false); // Để nền trong suốt
+
+        JLabel greetingLabel = new JLabel("Xin chào bạn!");
+        greetingLabel.setForeground(Color.WHITE);
+        greetingLabel.setFont(new Font("Segoe UI", Font.BOLD, 20)); // Font giống HDPhone
+
+
+        rightHeader.add(greetingLabel);
+
+// Add both sides to header
+        header.add(leftHeader, BorderLayout.WEST);
+        header.add(rightHeader, BorderLayout.EAST);
+        ;
 
         // Sidebar
         JPanel sidebar = new JPanel();
@@ -45,20 +62,23 @@ public class InternetCustomerManager extends JFrame {
                 "Gói cước và Dịch vụ",
                 "Lịch sử giao dịch",
                 "Thông báo và nhắc hạn",
-                "Thanh toán"
         };
 
         // CardLayout Panel
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // Add views
-        cardPanel.add(new HomePanel(), "Trang chủ");
-        cardPanel.add(new CustomerManagerPanel(), "Quản lý thuê bao của bạn");
-        cardPanel.add(new ServicePanel(), "Gói cước và Dịch vụ");
-        cardPanel.add(new TransactionHistoryPanel(), "Lịch sử giao dịch");
-        cardPanel.add(new NotificationPanel(), "Thông báo và nhắc hạn");
-        cardPanel.add(new PaymentPanel(), "Thanh toán");
+        HomePanel home = new HomePanel();
+        CustomerManagerPanel customerPanel = new CustomerManagerPanel();
+        TransactionHistoryPanel historyPanel = new TransactionHistoryPanel();
+        ServicePanel servicePanel = new ServicePanel(historyPanel);
+        NotificationPanel notifyPanel = new NotificationPanel();
+
+        cardPanel.add(home, "Trang chủ");
+        cardPanel.add(customerPanel, "Quản lý thuê bao của bạn");
+        cardPanel.add(servicePanel, "Gói cước và Dịch vụ");
+        cardPanel.add(historyPanel, "Lịch sử giao dịch");
+        cardPanel.add(notifyPanel, "Thông báo và nhắc hạn");
 
         for (String item : menuItems) {
             JButton menuButton = new JButton(item);
