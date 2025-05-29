@@ -1,56 +1,53 @@
 package Users;
 
-import Users.panels.*;
+import Users.panels.HomePanel;
+import Users.panels.CustomerManagerPanel;
+import Users.panels.TransactionHistoryPanel;
+import Users.panels.ServicePanel;
+import Users.panels.NotificationPanel;
+import ketnoi.DBConnection;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class InternetCustomerManager extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    public InternetCustomerManager() {
+    public InternetCustomerManager(String customerPhone) throws SQLException {
         setTitle("Quản Lý Thuê Bao Internet");
         setSize(1200, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(25, 118, 210));
         header.setPreferredSize(new Dimension(getWidth(), 70));
 
-// Left side of header (icon + title)
         JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-        leftHeader.setOpaque(false); // Để màu nền trong suốt
-
+        leftHeader.setOpaque(false);
         JLabel iconLabel = new JLabel();
         iconLabel.setIcon(UIManager.getIcon("FileView.computerIcon"));
         JLabel titleLabel = new JLabel("HDPhone");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
         leftHeader.add(iconLabel);
         leftHeader.add(titleLabel);
 
-// Right side of header (greeting)
         JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
-        rightHeader.setOpaque(false); // Để nền trong suốt
-
+        rightHeader.setOpaque(false);
         JLabel greetingLabel = new JLabel("Xin chào bạn!");
         greetingLabel.setForeground(Color.WHITE);
-        greetingLabel.setFont(new Font("Segoe UI", Font.BOLD, 20)); // Font giống HDPhone
-
-
+        greetingLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         rightHeader.add(greetingLabel);
 
-// Add both sides to header
         header.add(leftHeader, BorderLayout.WEST);
         header.add(rightHeader, BorderLayout.EAST);
-        ;
 
-        // Sidebar
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBackground(new Color(30, 136, 229));
@@ -64,12 +61,13 @@ public class InternetCustomerManager extends JFrame {
                 "Thông báo và nhắc hạn",
         };
 
-        // CardLayout Panel
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
+        Connection conn = DBConnection.getConnection();
+
         HomePanel home = new HomePanel();
-        CustomerManagerPanel customerPanel = new CustomerManagerPanel();
+        CustomerManagerPanel customerPanel = new CustomerManagerPanel(conn, customerPhone);
         TransactionHistoryPanel historyPanel = new TransactionHistoryPanel();
         ServicePanel servicePanel = new ServicePanel(historyPanel);
         NotificationPanel notifyPanel = new NotificationPanel();

@@ -1,4 +1,4 @@
-package Users.dialogs;
+package Users;
 
 import javax.swing.*;
 import java.awt.*;
